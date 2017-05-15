@@ -8,7 +8,7 @@ services:
   # PostgreSQL database
   db:
     restart: always
-    image: dgnest/postgres:9.4
+    image: dgnest/postgres:9.6
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -18,21 +18,20 @@ services:
     env_file:
       - .env
     volumes:
-      - pgvolume-9.4:/var/lib/postgresql/data #using the declared volume
+      - pgvolume-9.6:/var/lib/postgresql/data #using the declared volume
 
-  # Django web server
-  web:
-    hostname: web
+  tensorflow:
+    hostname: tensorflow
     ports:
       - "80:8000"
       - "8080:5000"
     restart: always
-    image: python:2.7.9
+    image: tensorflow/tensorflow:1.0.0
     environment: &environment
       - DB_URL=postgres://postgres:postgres@db:5432/tensorflow-image-classifier
     build:
       context: .
-      dockerfile: docker/web/Dockerfile
+      dockerfile: docker/tensorflow/Dockerfile
     volumes:
       - .:/app
     env_file:
@@ -51,9 +50,9 @@ services:
 
 
 volumes:
-  pgvolume-9.4:
+  pgvolume-9.6:
     external:
-      name: tensorflow-image-classifier-pgvolume-9-4
+      name: tensorflow-image-classifier-pgvolume-9-6
   volume_rabbit:
     external:
       name: stored-rabbitmq-tensorflow-image-classifier
