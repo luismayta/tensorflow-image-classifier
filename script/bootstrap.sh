@@ -3,7 +3,7 @@
 
 export PROJECT_NAME=tensorflow-image-classifier
 
-export PYTHON_VERSION=2.7.9
+export PYTHON_VERSION=3.6.1
 export PYENV_NAME="${PROJECT_NAME}"
 
 export GVM_NAME="${PROJECT_NAME}"
@@ -14,7 +14,6 @@ export GVM_PATHS_NAME=(
 )
 
 export GRIP_PORT=6430
-export RUNSERVER_PORT=8000
 export DEPLOY_ACCOUNT=ubuntu
 
 # Vars Dir
@@ -34,11 +33,6 @@ export DEPLOY_DEST_DIR=/home/"${DEPLOY_ACCOUNT}"/$PROJECT_NAME/src/staticfiles/
 
 export FILE_PLAYBOOK="${PROVISION_DIR}/provision.yaml"
 
-export DEPLOY_SERVER=192.168.30.10
-export DEPLOY_ACCOUNT=pi
-
-export DEPLOY_SOURCE_DIR=$ROOT_DIR/src/staticfiles/
-export DEPLOY_DEST_DIR=/home/$DEPLOY_ACCOUNT/$PROJECT_NAME/src/staticfiles/
 
 export DJANGO_IP=0.0.0.0
 export DJANGO_PORT=8080
