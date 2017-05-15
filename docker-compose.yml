@@ -1,0 +1,58 @@
+# Tensorflow-Image-Classifier: Docker Compose
+# https://docs.docker.com/compose/
+#
+# Usage: docker-compose up
+version: '3'
+services:
+
+  # PostgreSQL database
+  db:
+    restart: always
+    image: dgnest/postgres:9.6
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tensorflow-image-classifier
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgvolume-9.6:/var/lib/postgresql/data #using the declared volume
+
+  tensorflow:
+    hostname: tensorflow
+    ports:
+      - "80:8000"
+      - "8080:5000"
+    restart: always
+    image: tensorflow/tensorflow:1.0.0
+    environment: &environment
+      - DB_URL=postgres://postgres:postgres@db:5432/tensorflow-image-classifier
+    build:
+      context: .
+      dockerfile: docker/tensorflow/Dockerfile
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  task:
+    restart: always
+    image: golang:1.8.0
+    environment: *environment
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
+
+volumes:
+  pgvolume-9.6:
+    external:
+      name: tensorflow-image-classifier-pgvolume-9-6
+  volume_rabbit:
+    external:
+      name: stored-rabbitmq-tensorflow-image-classifier
